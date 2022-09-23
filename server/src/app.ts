@@ -13,6 +13,8 @@ app.use(
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.get('/', (req, res) => res.send('There is still hope...'));
+app.get('/', (req, res) => {
+  res.status(200).json("Looks like it's working");
+});
 
 export default app;

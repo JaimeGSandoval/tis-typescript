@@ -1,10 +1,11 @@
 {
   "name": "today-in-science-fs",
   "version": "1.0.0",
-  "description": "A full stack application that retireves the most recent news in science",
+  "description": "A full stack application that retrieves the most recent news in science",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-server": "npm install --prefix server",
+    "test": "npm test --prefix server"
   },
   "repository": {
     "type": "git",
