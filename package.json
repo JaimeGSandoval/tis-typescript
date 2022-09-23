@@ -1,5 +1,5 @@
 {
-  "name": "today-in-science_v2",
+  "name": "today-in-science-fs",
   "version": "1.0.0",
   "description": "A full stack application that retireves the most recent news in science",
   "main": "index.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JaimeGSandoval/today-in-science-v2.git"
+    "url": "git+https://github.com/JaimeGSandoval/today-in-science-fs.git"
   },
   "author": "Jaime Sandoval",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/JaimeGSandoval/today-in-science-v2/issues"
+    "url": "https://github.com/JaimeGSandoval/today-in-science-fs/issues"
   },
   "dependencies": {
     "dotenv": "^16.0.2"
