@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit",
     "test:watch": "jest --watch",
     "test:build": "npm test -- build",
     "watch": "ts-node-dev --respawn --transpile-only src/server.ts",
