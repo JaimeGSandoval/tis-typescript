@@ -1,5 +1,5 @@
 import { QueryResult } from 'pg';
-import pool from '../database/postgres';
+import pool from '../../database/postgres';
 import queries from './queries';
 
 const getAllUsers = async () => {

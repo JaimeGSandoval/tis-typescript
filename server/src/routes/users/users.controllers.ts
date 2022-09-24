@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
-import usersModel from '../../models/users.model';
+import usersModel from '../../models/users/users.model';
+import utils from '../../utils/response-fail';
 
 export const httpGetAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -20,10 +21,7 @@ export const httpGetAllUsers = async (req: Request, res: Response): Promise<Resp
       },
     });
   } catch (e: any) {
-    return res.status(500).json({
-      status: 'Fail',
-      message: e.message,
-    });
+    return utils.responseFail(e, res);
   }
 };
 
@@ -51,9 +49,6 @@ export const httpGetUser = async (
       },
     });
   } catch (e: any) {
-    return res.status(500).json({
-      status: 'Fail',
-      message: e.message,
-    });
+    return utils.responseFail(e, res);
   }
 };
