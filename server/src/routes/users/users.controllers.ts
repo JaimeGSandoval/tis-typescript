@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 import usersModel from '../../models/users/users.model';
-import utils from '../../utils/response-fail';
+import { responseError, removeWhiteSpace } from '../../utils/utilities';
+
+interface CreateUser {
+  userName: string;
+  email: string;
+  password: string;
+}
 
 export const httpGetAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -21,7 +27,7 @@ export const httpGetAllUsers = async (req: Request, res: Response): Promise<Resp
       },
     });
   } catch (e: any) {
-    return utils.responseFail(e, res);
+    return responseError(e, res);
   }
 };
 
@@ -49,6 +55,22 @@ export const httpGetUser = async (
       },
     });
   } catch (e: any) {
-    return utils.responseFail(e, res);
+    return responseError(e, res);
   }
+};
+
+export const httpCreateUser = async (
+  req: Request<{}, {}, CreateUser>,
+  res: Response
+): Promise<Response> => {
+  const [userName, email, password] = Object.values(req.body).map((val) => removeWhiteSpace(val));
+
+  if (!userName || !email || !password) {
+    return res.status(400).json({
+      status: 'Fail',
+      message: 'A new user requires a user name, email, and password',
+    });
+  }
+
+  return res.status(201).send(`${userName} ${email} ${password}`);
 };
