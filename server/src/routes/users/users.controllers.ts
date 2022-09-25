@@ -1,13 +1,7 @@
 import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 import usersModel from '../../models/users/users.model';
-import { responseError, removeWhiteSpace } from '../../utils/utilities';
-
-interface CreateUser {
-  userName: string;
-  email: string;
-  password: string;
-}
+import { responseError } from '../../utils/utilities';
 
 export const httpGetAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -57,20 +51,4 @@ export const httpGetUser = async (
   } catch (e: any) {
     return responseError(e, res);
   }
-};
-
-export const httpCreateUser = async (
-  req: Request<{}, {}, CreateUser>,
-  res: Response
-): Promise<Response> => {
-  const [userName, email, password] = Object.values(req.body).map((val) => removeWhiteSpace(val));
-
-  if (!userName || !email || !password) {
-    return res.status(400).json({
-      status: 'Fail',
-      message: 'A new user requires a user name, email, and password',
-    });
-  }
-
-  return res.status(201).send(`${userName} ${email} ${password}`);
 };

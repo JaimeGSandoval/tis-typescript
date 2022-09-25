@@ -7,4 +7,9 @@ export const responseError = (error: any, response: Response) => {
   });
 };
 
-export const removeWhiteSpace = (val: string): string => val.replace(/\s+/g, '');
+export const badRequest = (res: Response, message: string) => {
+  return res.status(400).json({
+    status: 'Fail',
+    message,
+  });
+};
