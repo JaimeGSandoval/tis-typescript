@@ -3,12 +3,12 @@ import { QueryResult } from 'pg';
 import registerUser from '../../models/register/register.model';
 import encryptPassword from '../../utils/utilities';
 
-interface User {
+type User = {
   userName: string;
   email: string;
   password: string;
   passwordConfirm: string;
-}
+};
 
 const httpRegisterUser = async (req: Request<{}, {}, User>, res: Response): Promise<Response> => {
   const { userName, email, password, passwordConfirm } = req.body;
