@@ -2,18 +2,28 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
+import xss from 'xss-clean';
 import usersRouter from './routes/users/users.router';
 import registerRouter from './routes/register/register.router';
 
 const app = express();
+
 app.use(helmet());
+app.use(xss());
+
 app.use(
   cors({
     origin: 'http://localhost:8000',
   })
 );
+
+app.use(
+  express.json({
+    limit: '10kb',
+  })
+);
+
 app.use(morgan('dev'));
-app.use(express.json());
 
 app.get('/health-check', (req, res) => {
   res.status(200).json("Looks like it's working");

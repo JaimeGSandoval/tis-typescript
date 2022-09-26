@@ -1,15 +1,9 @@
-import { Response } from 'express';
+import bcrypt from 'bcrypt';
 
-export const responseError = (error: any, response: Response) => {
-  return response.status(500).json({
-    status: 'Fail',
-    message: error.message,
-  });
+const encryptPassword = async (password: string): Promise<string> => {
+  const saltRounds: number = Number(process.env.SALT_ROUNDS);
+  const encryptedPassword: string = await bcrypt.hash(password, saltRounds);
+  return encryptedPassword;
 };
 
-export const badRequest = (res: Response, message: string) => {
-  return res.status(400).json({
-    status: 'Fail',
-    message,
-  });
-};
+export default encryptPassword;

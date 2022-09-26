@@ -1,13 +1,9 @@
 import { QueryResult } from 'pg';
 import pool from '../../database/postgres';
-import queries from './queries';
+import registerUserQuery from './queries';
 
-const registerUser = async (user_name: string, email: string, password: string) => {
-  const newUser: QueryResult = await pool.query(queries.registerUserQuery, [
-    user_name,
-    email,
-    password,
-  ]);
+const registerUser = async (userName: string, email: string, password: string) => {
+  const newUser: QueryResult = await pool.query(registerUserQuery, [userName, email, password]);
   return newUser;
 };
 
