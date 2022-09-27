@@ -13,13 +13,14 @@ type UserInput = {
   email: string;
   password: string;
   passwordConfirm: string;
+  role: string;
 };
 
 const httpRegisterUser = async (
   req: Request<{}, {}, UserInput>,
   res: Response
 ): Promise<Response> => {
-  const { userName, email, password, passwordConfirm } = req.body;
+  const { userName, email, password, passwordConfirm, role } = req.body;
 
   if (password !== passwordConfirm) {
     return res.status(400).json({
@@ -48,7 +49,7 @@ const httpRegisterUser = async (
     }
 
     const encryptedPassword: string = await encryptPassword(password);
-    const newUser: QueryResult<User> = await registerUser(userName, email, encryptedPassword);
+    const newUser: QueryResult<User> = await registerUser(userName, email, encryptedPassword, role);
 
     return res.status(201).json({
       status: 'Success',
