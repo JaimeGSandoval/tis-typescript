@@ -1,10 +1,26 @@
 import { QueryResult } from 'pg';
-import pool from '../../database/postgres';
-import registerUserQuery from './queries';
+import db from '../../database/postgres';
+import queries from './queries';
 
-const registerUser = async (userName: string, email: string, password: string) => {
-  const newUser: QueryResult = await pool.query(registerUserQuery, [userName, email, password]);
+export const registerUser = async (
+  userName: string,
+  email: string,
+  password: string
+): Promise<QueryResult> => {
+  const newUser: QueryResult = await db.query(queries.registerUserQuery, [
+    userName,
+    email,
+    password,
+  ]);
   return newUser;
 };
 
-export default registerUser;
+export const userAlreadyExists = async (email: string): Promise<QueryResult> => {
+  const user: QueryResult = await db.query(queries.userExistsQuery, [email]);
+  return user;
+};
+
+export const userNameTaken = async (userName: string): Promise<QueryResult> => {
+  const user: QueryResult = await db.query(queries.userNameTakenQuery, [userName]);
+  return user;
+};
