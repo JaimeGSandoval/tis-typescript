@@ -9,7 +9,7 @@ const getAllUsers = async (): Promise<QueryResult<User[]>> => {
 };
 
 const getUserById = async (userId: number): Promise<QueryResult<User>> => {
-  const user: QueryResult<User> = await db.query(queries.getUserById, [userId]);
+  const user: QueryResult<User> = await db.query(queries.getUserByIdQuery, [userId]);
   return user;
 };
 
