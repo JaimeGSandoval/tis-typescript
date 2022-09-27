@@ -5,7 +5,7 @@ import {
   userAlreadyExists,
   userNameTaken,
 } from '../../models/register/register.model';
-import { encryptPassword, conflictResponse } from '../../utils/utilities';
+import { encryptPassword, failedResponse } from '../../utils/utilities';
 import User from '../../types/User';
 
 type UserInput = {
@@ -34,14 +34,14 @@ const httpRegisterUser = async (
     const userExistsMsg: string = 'You have already registered. Would you like to login?';
 
     if (userExists.rows.length) {
-      return conflictResponse(409, userExistsMsg, res);
+      return failedResponse(409, userExistsMsg, res);
     }
 
     const userNameUnavailable: QueryResult = await userNameTaken(userName);
     const userNameTakenMsg: string = 'That user name is already taken';
 
     if (userNameUnavailable.rows.length) {
-      return conflictResponse(409, userNameTakenMsg, res);
+      return failedResponse(409, userNameTakenMsg, res);
     }
 
     const encryptedPassword: string = await encryptPassword(password);
