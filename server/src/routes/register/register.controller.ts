@@ -5,21 +5,22 @@ import {
   userAlreadyExists,
   userNameTaken,
 } from '../../models/register/register.model';
+import { encryptPassword, failedResponse } from '../../utils/utilities';
 import User from '../../types/User';
-import encryptPassword from '../../utils/utilities';
 
 type UserInput = {
   userName: string;
   email: string;
   password: string;
   passwordConfirm: string;
+  role: string;
 };
 
 const httpRegisterUser = async (
   req: Request<{}, {}, UserInput>,
   res: Response
 ): Promise<Response> => {
-  const { userName, email, password, passwordConfirm } = req.body;
+  const { userName, email, password, passwordConfirm, role } = req.body;
 
   if (password !== passwordConfirm) {
     return res.status(400).json({
@@ -30,25 +31,21 @@ const httpRegisterUser = async (
 
   try {
     const userExists: QueryResult = await userAlreadyExists(email);
+    const userExistsMsg: string = 'You have already registered. Would you like to login?';
 
     if (userExists.rows.length) {
-      return res.status(409).json({
-        status: 'Fail',
-        message: 'You have already registered. Would you like to login?',
-      });
+      return failedResponse(409, userExistsMsg, res);
     }
 
     const userNameUnavailable: QueryResult = await userNameTaken(userName);
+    const userNameTakenMsg: string = 'That user name is already taken';
 
     if (userNameUnavailable.rows.length) {
-      return res.status(409).json({
-        status: 'Fail',
-        message: 'That user name is already taken',
-      });
+      return failedResponse(409, userNameTakenMsg, res);
     }
 
     const encryptedPassword: string = await encryptPassword(password);
-    const newUser: QueryResult<User> = await registerUser(userName, email, encryptedPassword);
+    const newUser: QueryResult<User> = await registerUser(userName, email, encryptedPassword, role);
 
     return res.status(201).json({
       status: 'Success',

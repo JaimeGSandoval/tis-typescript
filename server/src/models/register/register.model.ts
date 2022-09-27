@@ -5,13 +5,16 @@ import queries from './queries';
 export const registerUser = async (
   userName: string,
   email: string,
-  password: string
+  password: string,
+  role: string = 'user'
 ): Promise<QueryResult> => {
   const newUser: QueryResult = await db.query(queries.registerUserQuery, [
     userName,
     email,
     password,
+    role,
   ]);
+
   return newUser;
 };
 

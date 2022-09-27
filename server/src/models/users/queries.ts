@@ -1,4 +1,4 @@
-const getAllUsersQuery: string = 'SELECT user_id, user_name, email FROM users.users';
+const getAllUsersQuery: string = 'SELECT user_id, user_name, email, role FROM users.users';
 
 const getUserByIdQuery: string =
   'SELECT user_id, user_name, email FROM users.users WHERE user_id = $1';
