@@ -7,10 +7,17 @@ export const errorResponder = (
   res: Response,
   next: NextFunction
 ): Response => {
-  return res.status(error.statusCode).json(error.message);
+  return res.status(error.statusCode).json({
+    status: 'Fail',
+    statusCode: error.statusCode,
+    message: error.message,
+  });
 };
 
 export const invalidPathHandler = (req: Request, res: Response): Response => {
-  res.status(404);
-  return res.status(404).json(`${res.statusCode} - ${req.originalUrl} is an invalid path`);
+  return res.status(404).json({
+    status: 'Fail',
+    statusCode: res.statusCode,
+    message: `${res.statusCode} - ${req.originalUrl} not found. Invalid path`,
+  });
 };

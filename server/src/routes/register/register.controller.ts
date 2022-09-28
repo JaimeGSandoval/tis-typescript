@@ -47,7 +47,7 @@ const httpRegisterUser = async (
     return res.status(201).json({
       status: 'Success',
       data: {
-        newUser: newUser.rows,
+        newUser: newUser.rows[0],
       },
     });
   } catch (e: any) {

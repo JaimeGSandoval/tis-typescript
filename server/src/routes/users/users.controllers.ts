@@ -44,7 +44,7 @@ export const httpGetUserById = async (
     return res.status(200).json({
       status: 'Success',
       data: {
-        user: user.rows,
+        user: user.rows[0],
       },
     });
   } catch (e: any) {
