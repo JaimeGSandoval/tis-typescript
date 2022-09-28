@@ -1,17 +1,19 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
 import usersModel from '../../models/users/users.model';
 import User from '../../types/User';
+import AppError from '../../utils/app-error';
 
-export const httpGetAllUsers = async (req: Request, res: Response): Promise<Response> => {
+export const httpGetAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
     const users: QueryResult<User[]> = await usersModel.getAllUsers();
 
     if (!users.rows.length) {
-      return res.status(200).json({
-        status: 'Success',
-        message: 'There are no users signed up yet.',
-      });
+      return next(new AppError('There are no users signed up yet.', 204));
     }
 
     return res.status(200).json({
@@ -21,31 +23,22 @@ export const httpGetAllUsers = async (req: Request, res: Response): Promise<Resp
       },
     });
   } catch (e: any) {
-    return res.status(500).json('Internal server error');
+    return next(new AppError('There was an error retrieving the users. Please try again.', 500));
   }
 };
 
 export const httpGetUserById = async (
   req: Request<{ userId: string }>,
-  res: Response
-): Promise<Response> => {
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   const { userId } = req.params;
-
-  if (!userId) {
-    return res.status(400).json({
-      status: 'Success',
-      message: 'User ID is required',
-    });
-  }
 
   try {
     const user: QueryResult<User> = await usersModel.getUserById(parseInt(userId, 10));
 
     if (!user.rows.length) {
-      return res.status(400).json({
-        status: 'Fail',
-        message: 'There is no user by that ID',
-      });
+      return next(new AppError('There is no user by that ID', 400));
     }
 
     return res.status(200).json({
@@ -55,9 +48,6 @@ export const httpGetUserById = async (
       },
     });
   } catch (e: any) {
-    return res.status(500).json({
-      status: 'Fail',
-      message: e.message,
-    });
+    return next(new AppError('There was an error retrieving the user. Please try again.', 500));
   }
 };

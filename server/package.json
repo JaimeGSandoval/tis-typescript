@@ -7,8 +7,9 @@
     "test": "jest --forceExit",
     "test:watch": "jest --watch",
     "test:build": "npm test -- build",
-    "watch": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "watch":  "ts-node-dev --respawn --transpile-only src/server.ts",
     "start": "node src/server.ts",
+    "start:production": "NODE_ENV=production ts-node-dev src/server.ts",
     "build": "tsc"
   },
   "keywords": [],
