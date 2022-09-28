@@ -6,6 +6,7 @@ import xss from 'xss-clean';
 import usersRouter from './routes/users/users.router';
 import registerRouter from './routes/register/register.router';
 import loginRouter from './routes/login/login.router';
+import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
 
 const app = express();
 
@@ -33,5 +34,8 @@ app.get('/health-check', (req, res) => {
 app.use('/v1/users', usersRouter);
 app.use('/v1/register', registerRouter);
 app.use('/v1/login', loginRouter);
+
+app.use(errorResponder);
+app.use(invalidPathHandler);
 
 export default app;

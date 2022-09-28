@@ -1,12 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
+import { encryptPassword } from '../../utils/utilities';
+import AppError from '../../utils/app-error';
+import User from '../../types/User';
 import {
   registerUser,
   userAlreadyExists,
   userNameTaken,
 } from '../../models/register/register.model';
-import { encryptPassword, failedResponse } from '../../utils/utilities';
-import User from '../../types/User';
 
 type UserInput = {
   userName: string;
@@ -18,30 +19,26 @@ type UserInput = {
 
 const httpRegisterUser = async (
   req: Request<{}, {}, UserInput>,
-  res: Response
-): Promise<Response> => {
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   const { userName, email, password, passwordConfirm, role } = req.body;
 
   if (password !== passwordConfirm) {
-    return res.status(400).json({
-      status: 'Fail',
-      message: 'Password does not match password confirm',
-    });
+    return next(new AppError('Password does not match password confirm', 400));
   }
 
   try {
     const userExists: QueryResult = await userAlreadyExists(email);
-    const userExistsMsg: string = 'You have already registered. Would you like to login?';
 
     if (userExists.rows.length) {
-      return failedResponse(409, userExistsMsg, res);
+      return next(new AppError('You have already registered. Would you like to login?', 409));
     }
 
     const userNameUnavailable: QueryResult = await userNameTaken(userName);
-    const userNameTakenMsg: string = 'That user name is already taken';
 
     if (userNameUnavailable.rows.length) {
-      return failedResponse(409, userNameTakenMsg, res);
+      return next(new AppError('That user name is already taken', 409));
     }
 
     const encryptedPassword: string = await encryptPassword(password);
@@ -54,10 +51,7 @@ const httpRegisterUser = async (
       },
     });
   } catch (e: any) {
-    return res.status(500).json({
-      status: 'Fail',
-      message: e.message,
-    });
+    return next(e);
   }
 };
 
