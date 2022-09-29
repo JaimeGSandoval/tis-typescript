@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import xss from 'xss-clean';
+import cookieParser from 'cookie-parser';
 import usersRouter from './routes/users/users.router';
 import registerRouter from './routes/register/register.router';
 import loginRouter from './routes/login/login.router';
@@ -20,11 +21,15 @@ app.use(
   })
 );
 
+app.use(express.urlencoded({ extended: false }));
+
 app.use(
   express.json({
     limit: '10kb',
   })
 );
+
+app.use(cookieParser());
 
 app.use(morgan('dev'));
 

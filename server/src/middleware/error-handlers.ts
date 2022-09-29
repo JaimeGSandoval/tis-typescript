@@ -7,7 +7,8 @@ export const errorResponder = (
   res: Response,
   next: NextFunction
 ): Response => {
-  return res.status(error.statusCode).json({
+  const status = error.status || 500;
+  return res.status(status).json({
     status: 'Fail',
     statusCode: error.statusCode,
     message: error.message,

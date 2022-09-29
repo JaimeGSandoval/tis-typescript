@@ -8,6 +8,8 @@ const deserializeJwtUser = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  console.log(req);
+
   const authHeader = req.headers.authorization;
   const accessToken: string | undefined = authHeader?.replace(/^Bearer\s/, '');
 

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
-import getUserPasswordQuery from '../../models/login/login.model';
+import { getUserPassword, insertRefreshToken } from '../../models/login/login.model';
 import { comparePasswords, signJWT } from '../../utils/utilities';
-import User from '../../types/User';
 import AppError from '../../utils/app-error';
+import User from '../../types/User';
 
 const httpUserLogin = async (
   req: Request,
@@ -17,7 +17,7 @@ const httpUserLogin = async (
   }
 
   try {
-    const user: QueryResult = await getUserPasswordQuery(email);
+    const user: QueryResult = await getUserPassword(email);
 
     if (!user.rows.length) {
       return next(new AppError('A user is not registered with that email.', 400));
@@ -37,7 +37,24 @@ const httpUserLogin = async (
       role: user.rows[0].role,
     };
 
-    const accessToken: string = signJWT(userData);
+    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string);
+
+    const refreshToken: string = signJWT(userData, process.env.REFRESH_TOKEN_SECRET as string);
+
+    await insertRefreshToken(userData.userId, refreshToken);
+
+    // const testRetrieve = await db.query(
+    //   'SELECT token FROM users.refresh_tokens WHERE users.refresh_tokens.user_id = $1',
+    //   [userData.userId]
+    // );
+
+    // console.log('TEST REFRESH', testRetrieve.rows);
+
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // one day
+      sameSite: 'none',
+    });
 
     return res.status(200).json({
       status: 'Success',
@@ -45,6 +62,7 @@ const httpUserLogin = async (
         userData,
         message: `User ${userData.userName} logged in successfully`,
         accessToken,
+        refreshToken,
       },
     });
   } catch (e: any) {

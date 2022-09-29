@@ -8,20 +8,24 @@ export const encryptPassword = async (password: string): Promise<string> => {
   return encryptedPassword;
 };
 
-export const comparePasswords = async (password: string, storedPassword: string) => {
+export const comparePasswords = async (
+  password: string,
+  storedPassword: string
+): Promise<boolean> => {
   const match: boolean = await bcrypt.compare(password, storedPassword);
   return match;
 };
 
-export const signJWT = (userData: User) => {
+export const signJWT = (userData: User, jwt_secret: string): string => {
   const token: string = jwt.sign(
     {
       userId: userData.userId,
       userName: userData.userName,
+      email: userData.email,
       role: userData.role,
     },
-    process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: 30 }
+    jwt_secret,
+    { expiresIn: '1hour' }
   );
 
   return token;

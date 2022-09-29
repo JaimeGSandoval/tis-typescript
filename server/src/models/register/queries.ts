@@ -1,5 +1,5 @@
 const registerUserQuery: string =
-  'INSERT INTO users.users (user_name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING user_name, email, role';
+  'INSERT INTO users.users (user_name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING user_id, user_name, email, role';
 
 const userExistsQuery: string = 'SELECT email FROM users.users WHERE email = $1';
 
