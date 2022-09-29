@@ -1,11 +1,13 @@
 import { QueryResult } from 'pg';
-import getUserPasswordQuery from './queries';
+import queries from './queries';
 import db from '../../database/postgres';
 import User from '../../types/User';
 
-const getUserPassword = async (email: string): Promise<QueryResult<User>> => {
-  const userPassword: QueryResult<User> = await db.query(getUserPasswordQuery, [email]);
+export const getUserPassword = async (email: string): Promise<QueryResult<User>> => {
+  const userPassword: QueryResult<User> = await db.query(queries.getUserPasswordQuery, [email]);
   return userPassword;
 };
 
-export default getUserPassword;
+export const insertRefreshToken = async (userId: number, refreshToken: string): Promise<void> => {
+  await db.query(queries.insertRefreshTokenQuery, [userId, refreshToken]);
+};
