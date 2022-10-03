@@ -7,8 +7,9 @@ import cookieParser from 'cookie-parser';
 import usersRouter from './routes/users/users.router';
 import registerRouter from './routes/register/register.router';
 import loginRouter from './routes/login/login.router';
+import refreshRouter from './routes/refresh/refresh.router';
 import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
-import deserializeJwtUser from './middleware/deserialize-jwt-user';
+import deserializeUser from './middleware/deserialize-user';
 
 const app = express();
 
@@ -39,8 +40,9 @@ app.get('/health-check', (req, res) => {
 
 app.use('/v1/register', registerRouter);
 app.use('/v1/login', loginRouter);
+app.use('/v1/refresh', refreshRouter);
 
-app.use(deserializeJwtUser);
+app.use(deserializeUser);
 app.use('/v1/users', usersRouter);
 
 app.use(errorResponder);

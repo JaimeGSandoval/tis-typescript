@@ -1,15 +1,12 @@
-/* eslint-disable consistent-return */
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
 import AppError from '../utils/app-error';
+import { verifyJWT } from '../utils/jwt';
 
-const deserializeJwtUser = async (
+const deserializeUser = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
-  console.log(req);
-
+): Promise<Response | void> => {
   const authHeader = req.headers.authorization;
   const accessToken: string | undefined = authHeader?.replace(/^Bearer\s/, '');
 
@@ -17,18 +14,20 @@ const deserializeJwtUser = async (
     return next(new AppError('You are not logged in. Please login to get access', 401));
   }
 
-  try {
-    const decoded: string | jwt.JwtPayload = jwt.verify(
-      accessToken,
-      process.env.ACCESS_TOKEN_SECRET as string
-    );
+  const { decoded, expired } = verifyJWT(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
 
+  if (decoded) {
     res.locals.user = decoded;
-  } catch (e) {
-    return next(new AppError('Invalid token', 401));
+    return next();
   }
 
-  next();
+  if (expired) {
+    return res.status(401).json({
+      status: 'Fail',
+      message: 'Access token expired',
+      expiredToken: true,
+    });
+  }
 };
 
-export default deserializeJwtUser;
+export default deserializeUser;

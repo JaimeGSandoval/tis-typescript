@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
 import { getUserPassword, insertRefreshToken } from '../../models/login/login.model';
-import { comparePasswords, signJWT } from '../../utils/utilities';
+import { comparePasswords } from '../../utils/utilities';
 import AppError from '../../utils/app-error';
 import User from '../../types/User';
+import { signJWT } from '../../utils/jwt';
 
 const httpUserLogin = async (
   req: Request,
@@ -37,18 +38,11 @@ const httpUserLogin = async (
       role: user.rows[0].role,
     };
 
-    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string);
+    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 10);
 
-    const refreshToken: string = signJWT(userData, process.env.REFRESH_TOKEN_SECRET as string);
+    const refreshToken: string = signJWT(userData, process.env.REFRESH_TOKEN_SECRET as string, 60);
 
     await insertRefreshToken(userData.userId, refreshToken);
-
-    // const testRetrieve = await db.query(
-    //   'SELECT token FROM users.refresh_tokens WHERE users.refresh_tokens.user_id = $1',
-    //   [userData.userId]
-    // );
-
-    // console.log('TEST REFRESH', testRetrieve.rows);
 
     res.cookie('jwt', refreshToken, {
       httpOnly: true,
