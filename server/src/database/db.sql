@@ -13,13 +13,33 @@ CREATE TABLE users.users (
     created_on TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE users.refreshTokens (
+CREATE TABLE users.refresh_tokens (
     token_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
     user_id INT,
     valid_until TIMESTAMP DEFAULT NOW()+INTERVAL '1 day',
     token VARCHAR(512),
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE users.read_later_urls (
+    article_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
+    user_id INT,
+    date_added TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    article_url TEXT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE users.favorite_urls (
+    article_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
+    user_id INT,
+    date_added TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    article_url TEXT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+select articles_read_later.added_on, articles_read_later.article_link from articles_read_later join users on users.user_id = articles_read_later.user_id;
 
 SELECT refresh_tokens.token FROM refresh_tokens JOIN users ON refresh_tokens.user_id = users.user_id;
 

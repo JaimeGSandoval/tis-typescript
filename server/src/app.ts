@@ -10,6 +10,7 @@ import loginRouter from './routes/login/login.router';
 import refreshRouter from './routes/refresh/refresh.router';
 import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
 import deserializeUser from './middleware/deserialize-user';
+import articleUrlRouter from './routes/article-urls/articleUrls.router';
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/v1/refresh', refreshRouter);
 
 app.use(deserializeUser);
 app.use('/v1/users', usersRouter);
+app.use('/v1/article-urls', articleUrlRouter);
 
 app.use(errorResponder);
 app.use(invalidPathHandler);
