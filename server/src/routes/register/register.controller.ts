@@ -22,10 +22,11 @@ const httpRegisterUser = async (
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
+  console.log(req);
   const { userName, email, password, passwordConfirm, role } = req.body;
 
   if (password !== passwordConfirm) {
-    return next(new AppError('Password does not match password confirm', 400));
+    return next(new AppError('Password does not match password confirm.', 400));
   }
 
   try {
@@ -38,7 +39,7 @@ const httpRegisterUser = async (
     const userNameUnavailable: QueryResult = await userNameTaken(userName);
 
     if (userNameUnavailable.rows.length) {
-      return next(new AppError('That user name is already taken', 409));
+      return next(new AppError('That user name is already taken.', 409));
     }
 
     const encryptedPassword: string = await encryptPassword(password);
