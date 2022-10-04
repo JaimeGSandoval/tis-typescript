@@ -38,9 +38,17 @@ const httpUserLogin = async (
       role: user.rows[0].role,
     };
 
-    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 10);
+    const accessToken: string = signJWT(
+      userData,
+      process.env.ACCESS_TOKEN_SECRET as string,
+      '1 hour'
+    );
 
-    const refreshToken: string = signJWT(userData, process.env.REFRESH_TOKEN_SECRET as string, 60);
+    const refreshToken: string = signJWT(
+      userData,
+      process.env.REFRESH_TOKEN_SECRET as string,
+      '1 hour'
+    );
 
     await insertRefreshToken(userData.userId, refreshToken);
 
@@ -56,7 +64,6 @@ const httpUserLogin = async (
         userData,
         message: `User ${userData.userName} logged in successfully`,
         accessToken,
-        refreshToken,
       },
     });
   } catch (e: any) {

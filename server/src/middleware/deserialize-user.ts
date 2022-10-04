@@ -11,13 +11,14 @@ const deserializeUser = async (
   const accessToken: string | undefined = authHeader?.replace(/^Bearer\s/, '');
 
   if (!accessToken) {
-    return next(new AppError('You are not logged in. Please login to get access', 401));
+    return next(new AppError('You are not logged in. Please login to get access.', 401));
   }
 
   const { decoded, expired } = verifyJWT(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
 
   if (decoded) {
     res.locals.user = decoded;
+    console.log('DECODED USER', decoded);
     return next();
   }
 

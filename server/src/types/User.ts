@@ -2,7 +2,7 @@ type User = {
   userId: number;
   userName: string;
   email: string;
-  role: string;
+  role: 'user' | 'admin';
 };
 
 export default User;
