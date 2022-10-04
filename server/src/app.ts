@@ -8,9 +8,10 @@ import usersRouter from './routes/users/users.router';
 import registerRouter from './routes/register/register.router';
 import loginRouter from './routes/login/login.router';
 import refreshRouter from './routes/refresh/refresh.router';
-import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
-import deserializeUser from './middleware/deserialize-user';
 import articleUrlRouter from './routes/article-urls/articleUrls.router';
+import logoutRouter from './routes/logout/logout.router';
+import deserializeUser from './middleware/deserialize-user';
+import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/v1/refresh', refreshRouter);
 app.use(deserializeUser);
 app.use('/v1/users', usersRouter);
 app.use('/v1/article-urls', articleUrlRouter);
+app.use('/v1/logout', logoutRouter);
 
 app.use(errorResponder);
 app.use(invalidPathHandler);

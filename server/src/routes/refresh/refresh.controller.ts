@@ -9,7 +9,7 @@ const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextF
   const refreshToken: string = req.cookies.jwt;
 
   if (!refreshToken) {
-    next(new AppError('Unauthorized: Token does not exist', 401));
+    next(new AppError('Unauthorized: Token does not exist.', 401));
   }
 
   const { decoded, expired, valid } = verifyJWT(
@@ -22,7 +22,7 @@ const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextF
   }
 
   if (!valid) {
-    next(new AppError('Unauthorized: Invalid token', 401));
+    next(new AppError('Unauthorized: Invalid token.', 401));
   }
 
   try {
@@ -33,6 +33,9 @@ const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextF
         process.env.ACCESS_TOKEN_SECRET as string,
         10
       );
+
+      const result = verifyJWT(newAccessToken, process.env.ACCESS_TOKEN_SECRET as string);
+      res.locals.user = result.decoded;
 
       return res.status(201).json({
         status: 'Success',

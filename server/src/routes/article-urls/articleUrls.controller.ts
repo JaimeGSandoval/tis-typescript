@@ -4,11 +4,11 @@ import AppError from '../../utils/app-error';
 import addArticleUrl from '../../models/article-urls/articleUrls.model';
 
 const httpAddArticleUrl = async (
-  req: Request<{}, { userId: number }, { articleUrl: string; type: string }>,
+  req: Request<{}, { userId: number }, { title: string; articleUrl: string; type: string }>,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const { articleUrl, type } = req.body;
+  const { title, articleUrl, type } = req.body;
   const { userId } = res.locals.user;
 
   if (!userId) {
@@ -20,7 +20,7 @@ const httpAddArticleUrl = async (
   }
 
   try {
-    const addedUrl: QueryResult = await addArticleUrl(userId, articleUrl, type);
+    const addedUrl: QueryResult = await addArticleUrl(userId, title, articleUrl, type);
 
     return res.status(201).json({
       status: 'Success',
