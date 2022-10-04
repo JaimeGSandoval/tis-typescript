@@ -38,7 +38,7 @@ const httpUserLogin = async (
       role: user.rows[0].role,
     };
 
-    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 10);
+    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 600);
 
     const refreshToken: string = signJWT(
       userData,
