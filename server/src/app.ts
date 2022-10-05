@@ -8,7 +8,7 @@ import usersRouter from './routes/users/users.router';
 import registerRouter from './routes/register/register.router';
 import loginRouter from './routes/login/login.router';
 import refreshRouter from './routes/refresh/refresh.router';
-import articleUrlRouter from './routes/article-urls/articleUrls.router';
+import articleUrlRouter from './routes/articles/articles.router';
 import logoutRouter from './routes/logout/logout.router';
 import deserializeUser from './middleware/deserialize-user';
 import { errorResponder, invalidPathHandler } from './middleware/error-handlers';

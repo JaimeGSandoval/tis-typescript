@@ -21,21 +21,21 @@ CREATE TABLE users.refresh_tokens (
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE users.read_later_urls (
+CREATE TABLE users.read_later_articles (
     article_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
     user_id INT,
     date_added TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP NOT NULL,
     article_url TEXT NOT NULL,
-    title VARCHAR(255) NOT NULL,
+    article_title VARCHAR(255) NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE users.favorite_urls (
+CREATE TABLE users.favorite_articles (
     article_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
     user_id INT,
     date_added TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP NOT NULL,
     article_url TEXT NOT NULL,
-    title VARCHAR(255) NOT NULL,
+    article_title VARCHAR(255) NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 

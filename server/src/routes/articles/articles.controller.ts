@@ -3,18 +3,29 @@ import { QueryResult } from 'pg';
 import AppError from '../../utils/app-error';
 import {
   addArticle,
+  deleteArticle,
   getFavoriteArticles,
   getReadLaterArticles,
-} from '../../models/article-urls/articleUrls.model';
+  getArticleById,
+} from '../../models/articles/articles.model';
 
-export const httpAddArticleUrl = async (
-  req: Request<{}, { userId: number }, { title: string; articleUrl: string; type: string }>,
+type Article = {
+  articleTitle: string;
+  articleUrl: string;
+  articleType: string;
+};
+
+type UserId = {
+  userId: number;
+};
+
+export const httpAddArticle = async (
+  req: Request<{}, {}, Article>,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const { title, articleUrl, type } = req.body;
-  console.log('LOCALS', res.locals.user);
-  const { userId } = res.locals.user;
+  const { articleTitle, articleUrl, articleType } = req.body;
+  const { userId }: UserId = res.locals.user;
 
   if (!userId) {
     return next(new AppError('User ID is required.', 400));
@@ -25,7 +36,7 @@ export const httpAddArticleUrl = async (
   }
 
   try {
-    const addedUrl: QueryResult = await addArticle(userId, title, articleUrl, type);
+    const addedUrl: QueryResult = await addArticle(userId, articleTitle, articleUrl, articleType);
 
     return res.status(201).json({
       status: 'Success',
@@ -39,11 +50,11 @@ export const httpAddArticleUrl = async (
 };
 
 export const httpGetFavoriteArticles = async (
-  req: Request<{}, { userId: number }>,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const { userId } = res.locals.user;
+  const { userId }: UserId = res.locals.user;
 
   if (!userId) {
     next(new AppError('User ID is required.', 400));
@@ -68,7 +79,7 @@ export const httpGetReadLaterArticles = async (
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const { userId } = res.locals.user;
+  const { userId }: UserId = res.locals.user;
 
   if (!userId) {
     next(new AppError('User ID is required.', 400));
@@ -83,6 +94,29 @@ export const httpGetReadLaterArticles = async (
         readLaterArticles: readLaterArticles.rows,
       },
     });
+  } catch (e: any) {
+    return next(new AppError(e.message, 500));
+  }
+};
+
+export const httpDeleteArticle = async (
+  req: Request<{ articleId: string }, {}, { articleType: string }>,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const { articleId } = req.params;
+  const { articleType } = req.body;
+
+  try {
+    const foundArticle = await getArticleById(parseInt(articleId, 10), articleType);
+
+    if (!foundArticle.rows.length) {
+      return next(new AppError('Article not found. It may have been deleted already', 404));
+    }
+
+    await deleteArticle(parseInt(articleId, 10), articleType);
+
+    return res.sendStatus(204);
   } catch (e: any) {
     return next(new AppError(e.message, 500));
   }

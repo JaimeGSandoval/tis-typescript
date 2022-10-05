@@ -1,14 +1,16 @@
 import { Router } from 'express';
 import {
-  httpAddArticleUrl,
+  httpAddArticle,
+  httpDeleteArticle,
   httpGetFavoriteArticles,
   httpGetReadLaterArticles,
-} from './articleUrls.controller';
+} from './articles.controller';
 
 const articleUrlRouter: Router = Router();
 
-articleUrlRouter.post('/', httpAddArticleUrl);
+articleUrlRouter.post('/', httpAddArticle);
 articleUrlRouter.get('/favorite-articles', httpGetFavoriteArticles);
 articleUrlRouter.get('/read-later-articles', httpGetReadLaterArticles);
+articleUrlRouter.delete('/delete-article/:articleId', httpDeleteArticle);
 
 export default articleUrlRouter;
