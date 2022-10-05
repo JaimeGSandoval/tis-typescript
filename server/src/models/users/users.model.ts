@@ -1,15 +1,15 @@
 import { QueryResult } from 'pg';
 import db from '../../database/postgres';
-import queries from './queries';
+import { getAllUsersQuery, getUserByIdQuery } from './queries';
 import User from '../../types/User';
 
 const getAllUsers = async (): Promise<QueryResult<User[]>> => {
-  const users: QueryResult<User[]> = await db.query(queries.getAllUsersQuery);
+  const users: QueryResult<User[]> = await db.query(getAllUsersQuery);
   return users;
 };
 
 const getUserById = async (userId: number): Promise<QueryResult<User>> => {
-  const user: QueryResult<User> = await db.query(queries.getUserByIdQuery, [userId]);
+  const user: QueryResult<User> = await db.query(getUserByIdQuery, [userId]);
   return user;
 };
 

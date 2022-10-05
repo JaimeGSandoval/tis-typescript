@@ -39,11 +39,15 @@ CREATE TABLE users.favorite_urls (
     CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
-select articles_read_later.added_on, articles_read_later.article_link from articles_read_later join users on users.user_id = articles_read_later.user_id;
+SELECT articles_read_later.added_on, articles_read_later.article_link FROM articles_read_later JOIN users ON users.user_id = articles_read_later.user_id;
+
+INSERT INTO users.read_later_urls (user_id, article_title, article_url) VALUES ($1, $2, $3) RETURNING users.read_later_urls.article_url;
+
+INSERT INTO users.favorite_urls (user_id, article_title, article_url) VALUES ($1, $2, $3) RETURNING users.favorite_urls.article_url;
 
 SELECT refresh_tokens.token FROM refresh_tokens JOIN users ON refresh_tokens.user_id = users.user_id;
 
-INSERT INTO refresh_tokens (user_id, token) VALUES (1, 'test_token');
+INSERT INTO refresh_tokens (user_id, token) VALUES ($1, $2);
 
 SELECT token FROM users.refresh_tokens WHERE users.refresh_tokens.user_id = $1
 

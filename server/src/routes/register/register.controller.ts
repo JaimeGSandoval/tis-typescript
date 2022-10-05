@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
-import { encryptPassword } from '../../utils/utilities';
+import { encryptPassword } from '../../utils/bcrypt.utils';
 import AppError from '../../utils/app-error';
 import User from '../../types/User';
 import {

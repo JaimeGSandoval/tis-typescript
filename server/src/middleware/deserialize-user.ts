@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../utils/app-error';
-import { verifyJWT } from '../utils/jwt';
+import { verifyJWT } from '../utils/jwt.utils';
 
 const deserializeUser = async (
   req: Request,
@@ -17,6 +17,7 @@ const deserializeUser = async (
   const { decoded, expired } = verifyJWT(accessToken, process.env.ACCESS_TOKEN_SECRET as string);
 
   if (decoded) {
+    console.log('DESERIALIZE', decoded);
     res.locals.user = decoded;
 
     return next();

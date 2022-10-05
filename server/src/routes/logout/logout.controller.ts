@@ -7,7 +7,9 @@ const httpDeleteRefreshToken = async (
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const userId: number = res.locals.user.user_id;
+  console.log('LOCALS', res.locals.user);
+  const { userId } = res.locals.user;
+  console.log(userId);
 
   if (!userId) {
     return next(new AppError('User ID is required.', 400));

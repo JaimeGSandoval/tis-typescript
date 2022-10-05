@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
 import { getUserPassword, insertRefreshToken } from '../../models/login/login.model';
-import { comparePasswords } from '../../utils/utilities';
+import { comparePasswords } from '../../utils/bcrypt.utils';
 import AppError from '../../utils/app-error';
 import User from '../../types/User';
-import { signJWT } from '../../utils/jwt';
+import { signJWT } from '../../utils/jwt.utils';
 
 const httpUserLogin = async (
   req: Request,
@@ -38,7 +38,7 @@ const httpUserLogin = async (
       role: user.rows[0].role,
     };
 
-    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 600);
+    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 30);
 
     const refreshToken: string = signJWT(
       userData,
@@ -53,6 +53,8 @@ const httpUserLogin = async (
       maxAge: 24 * 60 * 60 * 1000, // one day
       sameSite: 'none',
     });
+
+    res.locals.user = userData;
 
     return res.status(200).json({
       status: 'Success',
