@@ -40,7 +40,7 @@ const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextF
       const newAccessToken: string = signJWT(
         userData,
         process.env.ACCESS_TOKEN_SECRET as string,
-        10
+        800
       );
 
       const result = verifyJWT(newAccessToken, process.env.ACCESS_TOKEN_SECRET as string);
