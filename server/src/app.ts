@@ -35,7 +35,7 @@ app.use(
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.get('/health-check', (req, res) => res.status(200).json("Looks like it's working"));
+app.get('/health-check', (req, res) => res.sendStatus(200));
 
 app.use('/v1/register', registerRouter);
 app.use('/v1/login', loginRouter);

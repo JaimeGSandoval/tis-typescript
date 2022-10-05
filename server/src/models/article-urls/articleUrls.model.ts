@@ -1,13 +1,13 @@
 import { QueryResult } from 'pg';
 import db from '../../database/postgres';
+import {
+  addFavoriteUrlQuery,
+  addReadLaterUrlQuery,
+  getFavoriteUrlsQuery,
+  getReadLaterUrlsQuery,
+} from './queries';
 
-const addReadLaterUrlQuery: string =
-  'INSERT INTO users.read_later_urls (user_id, article_title, article_url) VALUES ($1, $2, $3) RETURNING users.read_later_urls.article_url';
-
-const addFavoriteUrlQuery: string =
-  'INSERT INTO users.favorite_urls (user_id, article_title, article_url) VALUES ($1, $2, $3) RETURNING users.favorite_urls.article_url';
-
-const addArticleUrl = async (
+export const addArticle = async (
   userId: number,
   title: string,
   articleUrl: string,
@@ -24,4 +24,12 @@ const addArticleUrl = async (
   return addedUrlResult;
 };
 
-export default addArticleUrl;
+export const getFavoriteArticles = async (userId: string): Promise<QueryResult> => {
+  const favoriteUrls: QueryResult = await db.query(getFavoriteUrlsQuery, [userId]);
+  return favoriteUrls;
+};
+
+export const getReadLaterArticles = async (userId: string): Promise<QueryResult> => {
+  const readLaterUrls: QueryResult = await db.query(getReadLaterUrlsQuery, [userId]);
+  return readLaterUrls;
+};

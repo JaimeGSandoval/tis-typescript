@@ -1,6 +1,6 @@
 import { QueryResult } from 'pg';
 import db from '../../database/postgres';
-import queries from './queries';
+import { registerUserQuery, userExistsQuery, userNameTakenQuery } from './queries';
 
 export const registerUser = async (
   userName: string,
@@ -8,22 +8,17 @@ export const registerUser = async (
   password: string,
   role: string = 'user'
 ): Promise<QueryResult> => {
-  const newUser: QueryResult = await db.query(queries.registerUserQuery, [
-    userName,
-    email,
-    password,
-    role,
-  ]);
+  const newUser: QueryResult = await db.query(registerUserQuery, [userName, email, password, role]);
 
   return newUser;
 };
 
 export const userAlreadyExists = async (email: string): Promise<QueryResult> => {
-  const user: QueryResult = await db.query(queries.userExistsQuery, [email]);
+  const user: QueryResult = await db.query(userExistsQuery, [email]);
   return user;
 };
 
 export const userNameTaken = async (userName: string): Promise<QueryResult> => {
-  const user: QueryResult = await db.query(queries.userNameTakenQuery, [userName]);
+  const user: QueryResult = await db.query(userNameTakenQuery, [userName]);
   return user;
 };

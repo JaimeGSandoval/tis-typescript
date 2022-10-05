@@ -2,8 +2,9 @@ import { QueryResult } from 'pg';
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../../utils/app-error';
 import db from '../../database/postgres';
-import { signJWT, verifyJWT } from '../../utils/jwt';
-import queries from '../../models/users/queries';
+import { signJWT, verifyJWT } from '../../utils/jwt.utils';
+import { getUserByIdQuery } from '../../models/users/queries';
+import User from '../../types/User';
 
 const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextFunction) => {
   const refreshToken: string = req.cookies.jwt;
@@ -27,9 +28,17 @@ const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextF
 
   try {
     if (valid && decoded) {
-      const user: QueryResult = await db.query(queries.getUserByIdQuery, [decoded.userId]);
+      const user: QueryResult = await db.query(getUserByIdQuery, [decoded.userId]);
+
+      const userData: User = {
+        userId: user.rows[0].user_id,
+        userName: user.rows[0].user_name,
+        email: user.rows[0].email,
+        role: user.rows[0].role,
+      };
+
       const newAccessToken: string = signJWT(
-        user.rows[0],
+        userData,
         process.env.ACCESS_TOKEN_SECRET as string,
         10
       );
