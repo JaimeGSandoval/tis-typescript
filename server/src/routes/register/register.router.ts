@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import httpRegisterUser from './register.controller';
-import registerSchema from '../../middleware/register.schema';
-import validateRegisterSchema from '../../middleware/validateRegister.schema';
+import { registerSchema } from '../../middleware/schemas';
+import validateSchemas from '../../middleware/validate.schemas';
 
 const registerRouter: Router = Router();
 
-registerRouter.post('/', registerSchema, validateRegisterSchema, httpRegisterUser);
+registerRouter.post('/', registerSchema, validateSchemas, httpRegisterUser);
 
 export default registerRouter;

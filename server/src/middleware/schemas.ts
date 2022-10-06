@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-const registerSchema = [
+export const registerSchema = [
   body('userName')
     .trim()
     .custom((value) => !/\s/.test(value))
@@ -14,4 +14,10 @@ const registerSchema = [
     .withMessage('Password must be at least 6 characters long'),
 ];
 
-export default registerSchema;
+export const updateUsernameSchema = [
+  body('newUsername')
+    .trim()
+    .custom((value) => !/\s/.test(value))
+    .isLength({ min: 5, max: 20 })
+    .withMessage('User name must be between 5 and 20 characters long'),
+];

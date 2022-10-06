@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
-const validateRegisterSchema = (req: Request, res: Response, next: NextFunction) => {
+const validateSchemas = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -10,4 +10,4 @@ const validateRegisterSchema = (req: Request, res: Response, next: NextFunction)
   return next();
 };
 
-export default validateRegisterSchema;
+export default validateSchemas;

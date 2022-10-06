@@ -5,7 +5,7 @@ export const addFavoriteUrlQuery: string =
   'INSERT INTO users.favorite_articles (user_id, article_title, article_url) VALUES ($1, $2, $3) RETURNING users.favorite_articles.article_url';
 
 export const getFavoriteUrlsQuery: string =
-  'SELECT date_added, article_title, article_url FROM favorite_articles WHERE favorite_articles.user_id = $1';
+  'SELECT article_id, date_added, article_title, article_url FROM favorite_articles WHERE favorite_articles.user_id = $1';
 
 export const getReadLaterUrlsQuery: string =
   'SELECT article_id, date_added, article_title, article_url FROM read_later_articles WHERE read_later_articles.user_id = $1';
