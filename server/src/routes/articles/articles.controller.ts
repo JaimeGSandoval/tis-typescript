@@ -75,18 +75,20 @@ export const httpGetFavoriteArticles = async (
 };
 
 export const httpGetReadLaterArticles = async (
-  req: Request<{}, { userId: number }>,
+  req: Request<{ userId: string }>,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const { userId }: UserId = res.locals.user;
+  const { userId } = req.params;
+
+  // const { userId }: UserId = res.locals.user;
 
   if (!userId) {
     next(new AppError('User ID is required.', 400));
   }
 
   try {
-    const readLaterArticles: QueryResult = await getReadLaterArticles(userId);
+    const readLaterArticles: QueryResult = await getReadLaterArticles(parseInt(userId, 10));
 
     return res.status(200).json({
       status: 'Success',

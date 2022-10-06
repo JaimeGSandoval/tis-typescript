@@ -4,7 +4,7 @@ import verifyRole from '../../middleware/verify-role';
 
 const usersRouter: Router = Router();
 
-usersRouter.get('/', verifyRole, httpGetAllUsers);
-usersRouter.get('/:userId', verifyRole, httpGetUserById);
+usersRouter.get('/', verifyRole('admin'), httpGetAllUsers);
+usersRouter.get('/:userId', verifyRole('admin'), httpGetUserById);
 
 export default usersRouter;
