@@ -6,11 +6,11 @@ import {
   httpGetReadLaterArticles,
 } from './articles.controller';
 
-const articleUrlRouter: Router = Router();
+const articlesRouter: Router = Router();
 
-articleUrlRouter.post('/', httpAddArticle);
-articleUrlRouter.get('/favorite-articles', httpGetFavoriteArticles);
-articleUrlRouter.get('/read-later-articles', httpGetReadLaterArticles);
-articleUrlRouter.delete('/delete-article/:articleId', httpDeleteArticle);
+articlesRouter.post('/', httpAddArticle);
+articlesRouter.get('/favorite-articles', httpGetFavoriteArticles);
+articlesRouter.get('/read-later-articles', httpGetReadLaterArticles);
+articlesRouter.delete('/delete-article/:articleId', httpDeleteArticle);
 
-export default articleUrlRouter;
+export default articlesRouter;
