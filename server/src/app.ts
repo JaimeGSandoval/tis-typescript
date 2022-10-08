@@ -38,6 +38,18 @@ app.use(morgan('dev'));
 
 app.get('/health-check', (req, res) => res.sendStatus(200));
 
+// (async () => {
+//   try {
+//     await sendEmail({
+//       email: 'test@email.com',
+//       subject: 'test',
+//       text: 'test',
+//     });
+//   } catch (e: any) {
+//     throw Error(e.message);
+//   }
+// })();
+
 app.use('/v1/register', registerRouter);
 app.use('/v1/login', loginRouter);
 app.use('/v1/refresh', refreshRouter);
