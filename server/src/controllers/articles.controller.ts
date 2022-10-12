@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
-import AppError from '../../utils/app-error';
+import AppError from '../utils/app-error';
 import {
   addArticle,
   deleteArticle,
   getFavoriteArticles,
   getReadLaterArticles,
   getArticleById,
-} from '../../models/articles/articles.model';
+} from '../models/articles/articles.model';
 
 type Article = {
   articleTitle: string;
@@ -75,18 +75,18 @@ export const httpGetFavoriteArticles = async (
 };
 
 export const httpGetReadLaterArticles = async (
-  req: Request<{}, { userId: number }>,
+  req: Request<{ userId: string }>,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const { userId }: UserId = res.locals.user;
+  const { userId } = req.params;
 
   if (!userId) {
     next(new AppError('User ID is required.', 400));
   }
 
   try {
-    const readLaterArticles: QueryResult = await getReadLaterArticles(userId);
+    const readLaterArticles: QueryResult = await getReadLaterArticles(parseInt(userId, 10));
 
     return res.status(200).json({
       status: 'Success',

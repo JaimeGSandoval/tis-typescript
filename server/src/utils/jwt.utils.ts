@@ -8,7 +8,16 @@ type JwtPayload = {
   role: string;
 };
 
-export const signJWT = (userData: User, jwt_secret: string, expires: string | number): string => {
+type UpdateEmail = {
+  userId: number;
+  newEmail: string;
+};
+
+export const signJWT = (
+  userData: User | UpdateEmail,
+  jwt_secret: string,
+  expires: string | number
+): string => {
   const user = {
     ...userData,
   };

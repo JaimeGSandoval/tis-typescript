@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
-import usersModel from '../../models/users/users.model';
-import User from '../../types/User';
-import AppError from '../../utils/app-error';
+import usersModel from '../models/users/users.model';
+import User from '../types/User';
+import AppError from '../utils/app-error';
 
 export const httpGetAllUsers = async (
   req: Request,

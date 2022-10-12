@@ -21,3 +21,7 @@ export const updateUsernameSchema = [
     .isLength({ min: 5, max: 20 })
     .withMessage('User name must be between 5 and 20 characters long'),
 ];
+
+export const updateEmailSchema = [
+  body('newEmail').isEmail().withMessage('Email must contain a valid email address'),
+];
