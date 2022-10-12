@@ -6,7 +6,7 @@ const sendEmail = async (options: any) => {
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT) || 0,
     auth: {
-      user: process.env.EMAIL_USER, // mailtrap username
+      user: process.env.EMAIL_USERNAME, // mailtrap username
       pass: process.env.EMAIL_PASSWORD, // mailtrap password
     },
   });
@@ -16,7 +16,7 @@ const sendEmail = async (options: any) => {
       from: 'tissupport@email.com', // sender address
       to: options.email, // list of receivers
       subject: options.subject, // Subject line
-      text: options.message, // plain text body
+      html: options.emailHtml, // message and link
     });
   } catch (e: any) {
     throw new AppError(e.message, 500);

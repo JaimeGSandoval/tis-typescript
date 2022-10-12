@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { httpGetAllUsers, httpGetUserById } from './users.controllers';
-import verifyRole from '../../middleware/verify-role';
+import { httpGetAllUsers, httpGetUserById } from '../controllers/users.controllers';
+import verifyRole from '../middleware/verify-role';
 
 const usersRouter: Router = Router();
 

@@ -1,13 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
-import { encryptPassword } from '../../utils/bcrypt.utils';
-import AppError from '../../utils/app-error';
-import User from '../../types/User';
-import {
-  registerUser,
-  userAlreadyExists,
-  userNameTaken,
-} from '../../models/register/register.model';
+import { encryptPassword } from '../utils/bcrypt.utils';
+import AppError from '../utils/app-error';
+import User from '../types/User';
+import { registerUser, userAlreadyExists, userNameTaken } from '../models/register/register.model';
 
 type UserInput = {
   userName: string;

@@ -4,13 +4,13 @@ import cors from 'cors';
 import morgan from 'morgan';
 import xss from 'xss-clean';
 import cookieParser from 'cookie-parser';
-import usersRouter from './routes/users/users.router';
-import registerRouter from './routes/register/register.router';
-import loginRouter from './routes/login/login.router';
-import refreshRouter from './routes/refresh/refresh.router';
-import articlesRouter from './routes/articles/articles.router';
-import logoutRouter from './routes/logout/logout.router';
-import settingsRouter from './routes/userSettings/userSettings.router';
+import usersRouter from './routes/users.router';
+import registerRouter from './routes/register.router';
+import loginRouter from './routes/login.router';
+import refreshRouter from './routes/refresh.router';
+import articlesRouter from './routes/articles.router';
+import logoutRouter from './routes/logout.router';
+import userSettingsRouter from './routes/userSettings.router';
 import deserializeUser from './middleware/deserialize-user';
 import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
 
@@ -36,28 +36,18 @@ app.use(
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.get('/health-check', (req, res) => res.sendStatus(200));
-
-// (async () => {
-//   try {
-//     await sendEmail({
-//       email: 'test@email.com',
-//       subject: 'test',
-//       text: 'test',
-//     });
-//   } catch (e: any) {
-//     throw Error(e.message);
-//   }
-// })();
+app.get('/v1/health-check', (req, res) => res.sendStatus(200));
 
 app.use('/v1/register', registerRouter);
 app.use('/v1/login', loginRouter);
 app.use('/v1/refresh', refreshRouter);
+app.get('/v1/confirmation', (req, res) => res.redirect('/client-login'));
+app.get('/client-login', (req, res) => res.status(200).send('Redirected to frontend login'));
 
 app.use(deserializeUser);
+app.use('/v1/settings', userSettingsRouter);
 app.use('/v1/users', usersRouter);
 app.use('/v1/articles', articlesRouter);
-app.use('/v1/settings', settingsRouter);
 app.use('/v1/logout', logoutRouter);
 
 app.use(errorResponder);

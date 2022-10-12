@@ -4,7 +4,7 @@ import {
   httpDeleteArticle,
   httpGetFavoriteArticles,
   httpGetReadLaterArticles,
-} from './articles.controller';
+} from '../controllers/articles.controller';
 
 const articlesRouter: Router = Router();
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import httpCreateNewAccessToken from './refresh.controller';
+import httpCreateNewAccessToken from '../controllers/refresh.controller';
 
 const refreshRouter: Router = Router();
 

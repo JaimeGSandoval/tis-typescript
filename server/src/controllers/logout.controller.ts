@@ -1,15 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import AppError from '../../utils/app-error';
-import deleteRefreshToken from '../../models/logout/logout.model';
+import AppError from '../utils/app-error';
+import deleteRefreshToken from '../models/logout/logout.model';
 
 const httpDeleteRefreshToken = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  console.log('LOCALS', res.locals.user);
   const { userId } = res.locals.user;
-  console.log(userId);
 
   if (!userId) {
     return next(new AppError('User ID is required.', 400));

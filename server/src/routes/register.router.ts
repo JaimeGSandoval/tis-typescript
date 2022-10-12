@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import httpRegisterUser from './register.controller';
-import { registerSchema } from '../../middleware/schemas';
-import validateSchemas from '../../middleware/validate.schemas';
+import httpRegisterUser from '../controllers/register.controller';
+import { registerSchema } from '../middleware/schemas';
+import validateSchemas from '../middleware/validate.schemas';
 
 const registerRouter: Router = Router();
 

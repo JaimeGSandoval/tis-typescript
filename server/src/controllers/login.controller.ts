@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryResult } from 'pg';
-import { getUserPassword, insertRefreshToken } from '../../models/login/login.model';
-import { comparePasswords } from '../../utils/bcrypt.utils';
-import AppError from '../../utils/app-error';
-import User from '../../types/User';
-import { signJWT } from '../../utils/jwt.utils';
+import { getUserPassword, insertRefreshToken } from '../models/login/login.model';
+import { comparePasswords } from '../utils/bcrypt.utils';
+import AppError from '../utils/app-error';
+import User from '../types/User';
+import { signJWT } from '../utils/jwt.utils';
 
 const httpUserLogin = async (
   req: Request,
@@ -38,13 +38,9 @@ const httpUserLogin = async (
       role: user.rows[0].role,
     };
 
-    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 260);
+    const accessToken: string = signJWT(userData, process.env.ACCESS_TOKEN_SECRET as string, 20);
 
-    const refreshToken: string = signJWT(
-      userData,
-      process.env.REFRESH_TOKEN_SECRET as string,
-      '1 hour'
-    );
+    const refreshToken: string = signJWT(userData, process.env.REFRESH_TOKEN_SECRET as string, 800);
 
     await insertRefreshToken(userData.userId, refreshToken);
 

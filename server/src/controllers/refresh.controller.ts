@@ -1,10 +1,10 @@
 import { QueryResult } from 'pg';
 import { Request, Response, NextFunction } from 'express';
-import AppError from '../../utils/app-error';
-import db from '../../database/postgres';
-import { signJWT, verifyJWT } from '../../utils/jwt.utils';
-import { getUserByIdQuery } from '../../models/users/queries';
-import User from '../../types/User';
+import AppError from '../utils/app-error';
+import db from '../database/postgres';
+import { signJWT, verifyJWT } from '../utils/jwt.utils';
+import { getUserByIdQuery } from '../models/users/queries';
+import User from '../types/User';
 
 const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextFunction) => {
   const refreshToken: string = req.cookies.jwt;
@@ -40,7 +40,7 @@ const httpCreateNewAccessToken = async (req: Request, res: Response, next: NextF
       const newAccessToken: string = signJWT(
         userData,
         process.env.ACCESS_TOKEN_SECRET as string,
-        800
+        20
       );
 
       const result = verifyJWT(newAccessToken, process.env.ACCESS_TOKEN_SECRET as string);
