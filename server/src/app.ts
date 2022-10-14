@@ -49,7 +49,10 @@ app.use(
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.get('/v1/health-check', (req, res) => res.sendStatus(200));
+app.get('/v1/health-check', (req, res) => {
+  res.sendStatus(200);
+});
+
 initiatePassport(passport);
 
 app.use(passport.initialize());
