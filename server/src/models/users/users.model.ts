@@ -15,5 +15,5 @@ export const getUserById = async (userId: number): Promise<QueryResult> => {
 
 export default {
   getAllUsers,
-  // getUserById,
+  getUserById,
 };
