@@ -32,8 +32,12 @@ const initiatePassport = (passport: PassportStatic) => {
 
   passport.deserializeUser(
     async (id: number, done: (err: any, user?: Express.User | false | null) => void) => {
-      const user = await getUserById(id);
-      done(null, user.rows[0]);
+      try {
+        const user = await getUserById(id);
+        done(null, user.rows[0]);
+      } catch (e) {
+        done(e);
+      }
     }
   );
 };
