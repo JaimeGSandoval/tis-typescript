@@ -18,7 +18,6 @@ const httpRegisterUser = async (
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  console.log(req);
   const { userName, email, password, passwordConfirm, role } = req.body;
 
   if (password !== passwordConfirm) {

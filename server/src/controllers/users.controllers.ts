@@ -9,6 +9,7 @@ export const httpGetAllUsers = async (
   res: Response,
   next: NextFunction
 ): Promise<Response | void> => {
+  console.log('AUT BOOL', req.isAuthenticated());
   try {
     const users: QueryResult<User[]> = await usersModel.getAllUsers();
 
