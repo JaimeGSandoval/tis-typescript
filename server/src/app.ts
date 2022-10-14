@@ -14,7 +14,7 @@ import userSettingsRouter from './routes/userSettings.router';
 import articlesRouter from './routes/articles.router';
 import logoutRouter from './routes/logout.router';
 import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
-// import { handleLogin, handleLoginError } from './controllers/login.controller';
+import { handleLogin, handleLoginError } from './controllers/login.controller';
 
 const app = express();
 
@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET as string,
+    secret: 'secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -49,19 +49,22 @@ app.use(
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.get('/v1/health-check', (req, res) => res.sendStatus(200));
+app.get('/v1/health-check', (req, res) => {
+  res.sendStatus(200);
+});
+
 initiatePassport(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/v1/register', registerRouter);
-// app.post(
-//   '/v1/login',
-//   passport.authenticate('local', { failWithError: true }),
-//   handleLogin,
-//   handleLoginError
-// );
+app.post(
+  '/v1/login',
+  passport.authenticate('local', { failWithError: true }),
+  handleLogin,
+  handleLoginError
+);
 app.use('/v1/refresh', refreshRouter);
 app.get('/v1/confirmation', (req, res) => res.redirect('/client-login'));
 app.get('/client-login', (req, res) => res.status(200).send('Redirected to frontend login'));
