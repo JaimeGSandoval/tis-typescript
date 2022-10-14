@@ -8,12 +8,12 @@ const getAllUsers = async (): Promise<QueryResult<User[]>> => {
   return users;
 };
 
-const getUserById = async (userId: number): Promise<QueryResult<User>> => {
+export const getUserById = async (userId: number): Promise<QueryResult> => {
   const user: QueryResult<User> = await db.query(getUserByIdQuery, [userId]);
   return user;
 };
 
 export default {
   getAllUsers,
-  getUserById,
+  // getUserById,
 };
