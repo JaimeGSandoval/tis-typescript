@@ -6,13 +6,13 @@ import { getUserById } from '../models/users/users.model';
 import { comparePasswords } from '../utils/bcrypt.utils';
 
 const authUser = async (email: string, password: string, done: any) => {
-  const authenticatedUser: QueryResult = await getUserByEmail(email);
-
-  if (!authenticatedUser.rows.length) return done(null, false);
-
-  const storedPassword: string = authenticatedUser.rows[0].password;
-
   try {
+    const authenticatedUser: QueryResult = await getUserByEmail(email);
+
+    if (!authenticatedUser.rows.length) return done(null, false);
+
+    const storedPassword: string = authenticatedUser.rows[0].password;
+
     if (await comparePasswords(password, storedPassword)) {
       done(null, authenticatedUser.rows[0]);
     } else {

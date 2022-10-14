@@ -14,7 +14,7 @@ import userSettingsRouter from './routes/userSettings.router';
 import articlesRouter from './routes/articles.router';
 import logoutRouter from './routes/logout.router';
 import { errorResponder, invalidPathHandler } from './middleware/error-handlers';
-import { handleLogin, handleLoginError } from './controllers/login.controller';
+// import { handleLogin, handleLoginError } from './controllers/login.controller';
 
 const app = express();
 
@@ -56,12 +56,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/v1/register', registerRouter);
-app.post(
-  '/v1/login',
-  passport.authenticate('local', { failWithError: true }),
-  handleLogin,
-  handleLoginError
-);
+// app.post(
+//   '/v1/login',
+//   passport.authenticate('local', { failWithError: true }),
+//   handleLogin,
+//   handleLoginError
+// );
 app.use('/v1/refresh', refreshRouter);
 app.get('/v1/confirmation', (req, res) => res.redirect('/client-login'));
 app.get('/client-login', (req, res) => res.status(200).send('Redirected to frontend login'));
